@@ -11,11 +11,18 @@ void some_function(nb::object table) {
   }
 
   auto stream = static_cast<struct ArrowArrayStream*>(PyCapsule_GetPointer(obj, "arrow_array_stream"));
+  int errcode;
+
   struct ArrowSchema schema;
-  if (!stream->get_schema(stream, &schema)) {
-    //std::string errMsg{stream->get_last_error(stream)};
+  if ((errcode = stream->get_schema(stream, &schema)) != 0) {
     throw std::runtime_error("Could not read from arrow schema:");
   }
+
+  struct ArrowArray chunk;
+  while ((errcode = stream->get_next(stream, &chunk) == 0) &&
+         chunk.release != NULL) {
+  }
+
 }
 
 NB_MODULE(somelib, m) {
