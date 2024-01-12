@@ -1,0 +1,35 @@
+[project]
+name = "capsule-capi-testing"
+version = "0.0.1a"
+description = "Minimal project to work with Arrow C API"
+dependencies = [
+  "pyarrow>=14.0.0"
+]
+requires-python = ">=3.9"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Office/Business",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[build-system]
+requires = [
+  "scikit-build-core",
+  "nanobind"
+]
+
+build-backend = "scikit_build_core.build"
+
+[tool.cibuildwheel]
+build = "cp39-*64 cp310-*64 cp311-*64 cp312-*64"
+skip = "*musllinux*"
+
+test-command = "python -c 'from capsule_capi_testing import somelib'"
+
+[tool.cibuildwheel.linux]
+repair-wheel-command = """
+auditwheel repair -w {dest_dir} {wheel}
+"""

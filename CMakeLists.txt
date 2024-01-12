@@ -28,3 +28,5 @@ FetchContent_MakeAvailable(nanoarrow-project)
 
 nanobind_add_module(somelib somelib.cpp)
 target_link_libraries(somelib PRIVATE nanoarrow)
+install(TARGETS somelib
+  LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
